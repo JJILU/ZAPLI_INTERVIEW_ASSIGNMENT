@@ -1,13 +1,15 @@
-
+import Hero from "./components/Hero"
+import Chat from "./components/Chat"
 
 
 function App() {
  
 
   return (
-   <div>
-    Home
-   </div>
+    <main>
+    <Hero />
+    <Chat />
+  </main>
   )
 }
 
