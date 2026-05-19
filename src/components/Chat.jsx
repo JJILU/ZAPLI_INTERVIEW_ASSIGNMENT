@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Search } from "lucide-react"
-import { searchWeb } from "../services/searchApi"
+import { searchWeb } from "../services/searchApi.js"
 
 export default function Chat() {
   const [query, setQuery] = useState("")
