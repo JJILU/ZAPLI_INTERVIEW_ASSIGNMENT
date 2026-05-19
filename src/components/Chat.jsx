@@ -1,29 +1,38 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Search } from "lucide-react"
-// import { searchWeb } from "../services/searchApi.js"
 import { searchWeb } from "../api_services/searchApi.js"
 
 export default function Chat() {
+  // state to store query
   const [query, setQuery] = useState("")
+  // state to store list of responses from Tavily
   const [messages, setMessages] = useState([])
+  // 
   const [loading, setLoading] = useState(false)
 
   const handleSearch = async () => {
+    // if no query submitted return out of function 
     if (!query.trim()) return
 
+    // user object to be sent to Tavily
     const userMessage = {
       role: "user",
       text: query,
     }
 
+    // get previous messages and add new message recieved
     setMessages((prev) => [...prev, userMessage])
+    // reset the Query state
     setQuery("")
+    // indicates request in progress
     setLoading(true)
 
     try {
+      // sends request to Tavily api
       const results = await searchWeb(query)
 
+      // set new message from results
       setMessages((prev) => [
         ...prev,
         {
@@ -32,6 +41,7 @@ export default function Chat() {
         },
       ])
     } catch (error) {
+      // failed to send request, set error message
       setMessages((prev) => [
         ...prev,
         {
@@ -47,13 +57,14 @@ export default function Chat() {
       ])
     }
 
+    // requset completed 
     setLoading(false)
   }
 
   return (
     <section className="relative min-h-screen bg-black px-4 md:px-6 py-24 overflow-hidden">
 
-      {/* ===== BACKGROUND GLOW (MATCH HERO) ===== */}
+      {/* ===== chat background glows to match hero section ===== */}
       <motion.div
         animate={{
           scale: [1, 1.3, 1],
@@ -77,7 +88,7 @@ export default function Chat() {
         className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-cyan-500 rounded-full blur-[120px] opacity-30"
       />
 
-      {/* ===== MAIN CONTENT ===== */}
+      {/* ===== search content ===== */}
       <div className="relative max-w-4xl mx-auto z-10">
 
         {/* TITLE */}
@@ -89,13 +100,13 @@ export default function Chat() {
           AI Search Interface
         </motion.h2>
 
-        {/* MESSAGES */}
+        {/* all messages  */}
         <div className="space-y-6 mb-10">
 
           {messages.map((msg, index) => (
             <div key={index}>
 
-              {/* USER MESSAGE */}
+              {/* user;s question */}
               {msg.role === "user" && (
                 <motion.div
                   initial={{ opacity: 0, x: 30 }}
@@ -106,7 +117,7 @@ export default function Chat() {
                 </motion.div>
               )}
 
-              {/* ASSISTANT MESSAGE */}
+              {/* response message */}
               {msg.role === "assistant" && (
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
@@ -142,7 +153,7 @@ export default function Chat() {
             </div>
           ))}
 
-          {/* LOADING STATE */}
+          {/* if loading true show loading text */}
           {loading && (
             <motion.div
               animate={{ opacity: [0.3, 1, 0.3] }}
@@ -155,7 +166,7 @@ export default function Chat() {
 
         </div>
 
-        {/* INPUT BAR */}
+        {/* enter query */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -165,7 +176,7 @@ export default function Chat() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask anything..."
+            placeholder="Ask me anything..."
             className="flex-1 bg-zinc-900 border border-zinc-700 focus:border-cyan-500 rounded-2xl px-5 py-4 text-white outline-none"
           />
 

@@ -4,14 +4,14 @@ import { motion, useScroll, useTransform } from "framer-motion"
 export default function Hero() {
   const { scrollYProgress } = useScroll()
 
-  // scroll enhancement (still used but NOT required for visibility)
+
   const textScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.3])
   const fadeOut = useTransform(scrollYProgress, [0.5, 0.8], [1, 0])
 
   return (
     <section className="relative h-[200vh] bg-black overflow-hidden">
 
-      {/* ===== BACKGROUND GLOW CORE (VISIBLE ON LOAD) ===== */}
+      {/* ===== Hero background that glows ===== */}
       <motion.div
         animate={{
           scale: [1, 1.4, 1],
@@ -24,7 +24,7 @@ export default function Hero() {
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-cyan-500 rounded-full blur-3xl"
       />
 
-      {/* ===== SECOND GLOW LAYER ===== */}
+      {/* ===== second background glow layer ===== */}
       <motion.div
         animate={{
           rotate: 360,
@@ -37,7 +37,7 @@ export default function Hero() {
         className="absolute top-1/2 left-1/2 w-80 h-80 -translate-x-1/2 -translate-y-1/2 border border-purple-500 rounded-full opacity-30"
       />
 
-      {/* ===== FLOATING ORBS ===== */}
+      {/* ===== floating backgroud orbs ===== */}
       {[...Array(10)].map((_, i) => (
         <motion.div
           key={i}
@@ -58,7 +58,7 @@ export default function Hero() {
         />
       ))}
 
-      {/* ===== CENTER TEXT (VISIBLE IMMEDIATELY) ===== */}
+      {/* ===== ensure text is centered ===== */}
       <div className="sticky top-0 h-screen flex items-center justify-center px-6">
 
         <motion.div
