@@ -1,12 +1,15 @@
 import { useState } from "react"
+import { motion } from "framer-motion"
 import { Search } from "lucide-react"
+import { searchWeb } from "../services/searchApi"
 
 export default function Chat() {
   const [query, setQuery] = useState("")
   const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const handleSearch = async () => {
-    if (!query) return
+    if (!query.trim()) return
 
     const userMessage = {
       role: "user",
@@ -14,105 +17,166 @@ export default function Chat() {
     }
 
     setMessages((prev) => [...prev, userMessage])
+    setQuery("")
+    setLoading(true)
 
     try {
-      const response = await fetch(
-        "https://api.tavily.com/search",
+      const results = await searchWeb(query)
+
+      setMessages((prev) => [
+        ...prev,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            api_key: import.meta.env.VITE_TAVILY_API_KEY,
-            query: query,
-            search_depth: "basic",
-            max_results: 5,
-          }),
-        }
-      )
-
-      const data = await response.json()
-
-      const results = data.results || []
-
-      const aiMessage = {
-        role: "assistant",
-        results,
-      }
-
-      setMessages((prev) => [...prev, aiMessage])
+          role: "assistant",
+          results,
+        },
+      ])
     } catch (error) {
-      console.log(error)
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          results: [
+            {
+              title: "Error",
+              content: "Something went wrong. Try again.",
+              url: "#",
+            },
+          ],
+        },
+      ])
     }
 
-    setQuery("")
+    setLoading(false)
   }
 
   return (
-    <section className="min-h-screen bg-zinc-950 px-6 py-20">
-      <div className="max-w-4xl mx-auto">
-        
-        <h2 className="text-5xl font-bold mb-10">
-          AI Search Chat
-        </h2>
+    <section className="relative min-h-screen bg-black px-4 md:px-6 py-24 overflow-hidden">
 
-        {/* messages */}
+      {/* ===== BACKGROUND GLOW (MATCH HERO) ===== */}
+      <motion.div
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+        }}
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-purple-500 rounded-full blur-[120px]"
+      />
+
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+        }}
+        className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-cyan-500 rounded-full blur-[120px] opacity-30"
+      />
+
+      {/* ===== MAIN CONTENT ===== */}
+      <div className="relative max-w-4xl mx-auto z-10">
+
+        {/* TITLE */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-3xl md:text-5xl font-bold text-white text-center mb-12"
+        >
+          AI Search Interface
+        </motion.h2>
+
+        {/* MESSAGES */}
         <div className="space-y-6 mb-10">
-          {messages.map((message, index) => (
+
+          {messages.map((msg, index) => (
             <div key={index}>
-              
-              {/* user */}
-              {message.role === "user" && (
-                <div className="bg-cyan-500 text-black p-4 rounded-2xl w-fit ml-auto max-w-xl">
-                  {message.text}
-                </div>
+
+              {/* USER MESSAGE */}
+              {msg.role === "user" && (
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="bg-cyan-500 text-black p-4 rounded-2xl w-fit ml-auto max-w-[80%]"
+                >
+                  {msg.text}
+                </motion.div>
               )}
 
-              {/* assistant */}
-              {message.role === "assistant" && (
-                <div className="bg-zinc-900 p-6 rounded-2xl">
+              {/* ASSISTANT MESSAGE */}
+              {msg.role === "assistant" && (
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="bg-zinc-900/80 border border-zinc-800 p-5 rounded-2xl backdrop-blur"
+                >
+
+                  <p className="text-xs text-gray-400 mb-3">
+                    LIVE SEARCH RESULTS
+                  </p>
+
                   <div className="space-y-4">
-                    {message.results.map((result, i) => (
+                    {msg.results.map((result, i) => (
                       <a
                         key={i}
                         href={result.url}
                         target="_blank"
-                        className="block border border-zinc-800 p-4 rounded-xl hover:bg-zinc-800"
+                        className="block p-4 rounded-xl border border-zinc-800 hover:border-cyan-500 transition hover:scale-[1.01]"
                       >
-                        <h3 className="font-bold text-cyan-400">
+                        <h3 className="text-cyan-400 font-bold">
                           {result.title}
                         </h3>
 
-                        <p className="text-gray-400 mt-2">
+                        <p className="text-gray-400 text-sm mt-2">
                           {result.content}
                         </p>
                       </a>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               )}
+
             </div>
           ))}
+
+          {/* LOADING STATE */}
+          {loading && (
+            <motion.div
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+              className="text-cyan-400 text-center"
+            >
+              Searching the web...
+            </motion.div>
+          )}
+
         </div>
 
-        {/* input */}
-        <div className="flex gap-4">
+        {/* INPUT BAR */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex gap-3"
+        >
+
           <input
-            type="text"
-            placeholder="Ask anything..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-zinc-900 border border-zinc-700 rounded-2xl px-6 py-4 outline-none"
+            placeholder="Ask anything..."
+            className="flex-1 bg-zinc-900 border border-zinc-700 focus:border-cyan-500 rounded-2xl px-5 py-4 text-white outline-none"
           />
 
           <button
             onClick={handleSearch}
-            className="bg-cyan-500 hover:bg-cyan-400 px-6 rounded-2xl text-black"
+            className="bg-cyan-500 hover:bg-cyan-400 text-black px-6 rounded-2xl transition flex items-center justify-center"
           >
-            <Search />
+            <Search size={18} />
           </button>
-        </div>
+
+        </motion.div>
+
       </div>
     </section>
   )

@@ -1,45 +1,59 @@
-# Zapli Frontend Assignment (React + Vite)
+# 🌌 AI Portal — Zapli Frontend Assignment (React + Vite)
 
-This project is a single-page frontend application built using React and Vite.
+This project is a single-page immersive frontend experience built with React and Vite.
 
-It was created as a take-home assignment to demonstrate:
-- Scroll-based animations
-- UI/UX design thinking
-- Real API integration
-- Component-based architecture
-
----
-
-## 🚀 Features
-
-### 1. Cinematic Scroll Animation Hero
-- Multi-phase scroll-driven animation
-- Floating particles and glowing effects
-- Smooth transitions between animation states
-- Creative “Journey Into AI” concept
-
-### 2. Web Search Chat Interface
-- Chat-style UI similar to ChatGPT
-- Users can type queries
-- Fetches real-time results from a live search API (Tavily)
-- Displays results in a structured format
+It was designed as a take-home assignment to demonstrate:
+- Scroll-based cinematic animations
+- UI/UX storytelling and motion design
+- Real API integration (no mock data)
+- Clean component architecture
 
 ---
 
-## 🛠️ Tech Stack
+# 🚀 Live Concept
 
-This project uses the following:
+The app simulates an **AI Portal experience**:
 
-- React (with Vite)
-- Framer Motion (animations)
+1. A cinematic animated landing hero
+2. A transition into an AI search interface
+3. A real-time web search chat powered by an external API
+
+The goal is to create a **smooth narrative flow from animation → interaction**.
+
+---
+
+# 🎬 Features
+
+## 1. Cinematic AI Portal Hero
+- Full-screen animated landing experience
+- Continuous glowing energy core
+- Rotating orbital ring system
+- Floating particle motion system
+- Scroll-enhanced scaling transitions
+- Immediate visual movement on page load (no delay)
+
+## 2. AI Search Chat Interface
+- Chat-style UI similar to modern AI tools
+- Real-time web search integration (Tavily API)
+- Structured result rendering (title, snippet, link)
+- Smooth animated message transitions
+- Loading state for search feedback
+
+---
+
+# 🛠️ Tech Stack
+
+- React (Vite)
+- Framer Motion (animation system)
 - Tailwind CSS (styling)
-- Tavily Search API (real-time web search)
+- Tavily Search API (live web search)
 
 ---
 
-## ⚡ Getting Started
+# ⚡ Getting Started
 
-### Install dependencies
+## 1. Install dependencies
+
 npm install
 
 
@@ -47,12 +61,12 @@ npm install
 npm run dev
 
 ### The app will be available at:
-
+[View Deployed Site](https://zapli-interview-assignment.vercel.app/)
 
 ## 🔐 Environment Variables
 
 Create a .env file in the root directory:
-VITE_TAVILY_API_KEY=
+- VITE_TAVILY_API_KEY=your_api_key_here
 
 
 ## 📁 Project Structure
@@ -69,51 +83,62 @@ src/
  └── index.css
 
 
-## 🎯 React + Vite Notes
+## 🎯 Architecture Highlights
 
-This project is built using the default Vite React template with some modifications for the assignment.
+### 🔹 Separation of Concerns
+- API logic is isolated in services/searchApi.js
+- UI logic is separated into reusable components
 
-Official Plugins Used:
-- @vitejs/plugin-react – uses Babel for Fast Refresh
-- @vitejs/plugin-react-swc – optional alternative using SWC for faster builds
+### 🔹 Animation System
+- Framer Motion used for both scroll-based and continuous animations
+- Hero uses layered motion (glow core + orbit + particles)
+- Chat uses entrance transitions for messages
 
-More info:
-[Vite GitHub Repo](https://github.com/vitejs/vite-plugin-react)
+### 🔹 Performance Considerations
+- Lightweight particle system (no heavy rendering loops)
+- Minimal re-renders in chat system
+- GPU-friendly transforms (scale, opacity, translate)
 
-### ⚙️ React Compiler
+## 🌌 Design Concept
 
-The React Compiler is not enabled in this project due to potential impacts on development and build performance.
+#### The UI is designed around a futuristic idea:
+  - "An AI Portal that activates on landing and transforms into a search interface."
 
-Learn more:
-[Learn React Installation](https://react.dev/learn/react-compiler/installation)
+#### This creates a narrative flow:
+  - Landing Experience → Activation → Interaction
 
-### 📌 ESLint & Best Practices
+## 📌 Key Features Implemented
+- Scroll-based hero animation
+- Continuous motion background system
+- Real API integration (Tavily)
+- Chat-style search interface
+- Animated message rendering
+- Loading feedback state
+- Mobile-responsive layout
 
-For production-ready applications, it is recommended to:
-
-- Enable TypeScript
-- Use type-aware ESLint rules
-- Follow stricter linting configurations
-
-You can explore the official Vite React TS template here:
-[official Vite React TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts)
-
-### ✨ Future Improvements
-
-If given more time, I would improve:
-
-- Smoother hero-to-chat transition animations
-- Better mobile responsiveness
-- Loading skeletons for API results
-- Improved UI polish and micro-interactions
-- Streaming search results instead of batch rendering
+## ✨ Future Improvements
+If given more time, I would enhance:
+- Smarter scroll-driven transitions (GSAP timeline control)
+- Chat streaming responses (token-by-token UI)
+- Improved mobile gesture interactions
+- Better performance optimization for particles
+- Sound design for portal activation
+- Advanced 3D or WebGL effects
 
 
 ## 👨‍💻 Purpose
 
-This project was built to demonstrate:
-
+This project demonstrates:
 - Frontend animation skills
-- API integration skills
+- API integration ability
+- UI composition thinking
 - Clean React architecture
-- UI creativity under time constraints
+- Ability to build interactive experiences from scratch
+
+## 📎 Notes
+
+This project focuses on:
+- Visual storytelling
+- Smooth motion design
+- Real-world API usage
+- Clean and maintainable code structure
