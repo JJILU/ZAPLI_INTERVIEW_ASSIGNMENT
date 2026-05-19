@@ -1,3 +1,4 @@
+
 export async function searchWeb(query) {
   const response = await fetch("https://api.tavily.com/search", {
     method: "POST",
